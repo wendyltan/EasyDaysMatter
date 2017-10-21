@@ -38,7 +38,6 @@ public class MatterDetailActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
 
-
         String matterContent = mMatter.getMatterContent();
         long matterDateMs = mMatter.getTargetDate().getTime();
         long daysCount = Utility.getDateInterval(mMatter.getTargetDate());

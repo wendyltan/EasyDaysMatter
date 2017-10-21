@@ -3,7 +3,6 @@ package xyz.wendyltanpcy.easydaysmatter.helper;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Created by user on 17-8-29.
@@ -27,9 +26,9 @@ public class Utility {
      */
     public static long getDateInterval(Date date) {
         Calendar calendar = Calendar.getInstance();
-        Date currentDate = calendar.getTime();
-        long duration = date.getTime() - currentDate.getTime();
-        long days = TimeUnit.MILLISECONDS.toDays(duration);
+        Calendar dateCal = Calendar.getInstance();
+        dateCal.setTime(date);
+        long days = dateCal.get(Calendar.DAY_OF_MONTH) - calendar.get(Calendar.DAY_OF_MONTH);
         return days;
     }
 }
