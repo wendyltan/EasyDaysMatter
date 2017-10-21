@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <include layout="@layout/toolbar" />
+
+    <EditText
+        android:id="@+id/matter_content_input"
+        android:hint="请输入不大于8个字的提要"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="3dp"
+        app:cardCornerRadius="5dp">
+
+        <TextView
+            android:id="@+id/datetime"
+            android:layout_width="match_parent"
+            android:layout_height="50sp"
+            android:textSize="18sp"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="20dp"/>
+    </android.support.v7.widget.CardView>
+    <Button
+        android:id="@+id/save_event"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="保存"
+        android:layout_marginTop="10dp"
+        android:textSize="18sp"/>
+
+</LinearLayout>

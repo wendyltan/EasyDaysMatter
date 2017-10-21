@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+           android:layout_width="match_parent"
+           xmlns:app="http://schemas.android.com/apk/res-auto"
+           android:elevation="3dp"
+           app:cardCornerRadius="5dp"
+           android:layout_margin="10dp"
+           android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:id="@+id/header_linear"
+            android:background="#ffffff">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/matter_before_text"
+                android:textColor="#ffffff"
+                android:text="hello!"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="hello"
+                android:maxLines="1"
+                android:textColor="#ffffff"
+                android:id="@+id/matter_content"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/matter_after_text"
+                android:textColor="#ffffff"
+                android:text="hello"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/matter_day_count"
+                android:textSize="90sp"
+                android:gravity="center_horizontal"
+                android:text="20"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="天"
+                android:textSize="12sp"/>
+        </LinearLayout>
+
+        <View
+            android:layout_height="1dp"
+            android:layout_width="match_parent"
+            android:background="#90909090"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/matter_date"
+            android:gravity="center_horizontal"
+            android:text="2015/9/18"/>
+
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
