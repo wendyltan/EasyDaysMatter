@@ -5,6 +5,8 @@
     <color name="colorAccent">#FF4081</color>
     <color name="theme">#4d6ead</color>
     <color name="future">#2e78da</color>
+    <color name="future_light">#387fe1</color>
     <color name="expired">#e96d2a</color>
+    <color name="expired_light">#eb7e43</color>
     <color name="dark">#302f2f</color>
 </resources>

@@ -19,6 +19,7 @@
         </activity>
         <activity android:name=".MatterAddActivity"/>
         <activity android:name=".MatterDetailActivity"/>
+        <activity android:name="MatterEditActivity"/>
     </application>
 
 </manifest>
