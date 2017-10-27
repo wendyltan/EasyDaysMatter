@@ -7,5 +7,10 @@
           android:title="Switch View"
           app:showAsAction="always" />
 
+    <item android:id="@+id/add_matter"
+          android:icon="@drawable/ic_add_white_24dp"
+          android:title="Add Matter"
+          app:showAsAction="always" />
+
 
 </menu>

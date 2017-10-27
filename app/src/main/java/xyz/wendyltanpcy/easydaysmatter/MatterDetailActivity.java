@@ -4,13 +4,17 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.wooplr.spotlight.SpotlightView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -26,7 +30,7 @@ import static java.lang.Math.abs;
  * Created by user on 17-8-29.
  */
 
-public class MatterDetailActivity extends BaseActivity {
+public class MatterDetailActivity extends BaseActivity implements View.OnClickListener {
 
 
     private TextView detailDate,detailAfter,detailBefore,detailContent,detailDays;
@@ -35,6 +39,7 @@ public class MatterDetailActivity extends BaseActivity {
     private static Context mContext;
     private static List<Matter> sMatterList;
     private LinearLayout detailHeader;
+    private SpotlightView guideView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +50,34 @@ public class MatterDetailActivity extends BaseActivity {
         setAllText();
 
 
+
+
     }
+
+
+    private void showGuide(View view,String uid,String title,String content){
+        guideView = new SpotlightView.Builder(this)
+                .introAnimationDuration(400)
+                .enableRevealAnimation(true)
+                .performClick(true)
+                .fadeinTextDuration(400)
+                .headingTvColor(Color.parseColor("#eb273f"))
+                .headingTvSize(32)
+                .headingTvText(title)
+                .subHeadingTvColor(Color.parseColor("#ffffff"))
+                .subHeadingTvSize(16)
+                .subHeadingTvText(content)
+                .maskColor(Color.parseColor("#dc000000"))
+                .target(view)
+                .lineAnimDuration(400)
+                .lineAndArcColor(Color.parseColor("#eb273f"))
+                .dismissOnTouch(true)
+                .dismissOnBackPress(true)
+                .enableDismissAfterShown(true)
+                .usageId(uid) //UNIQUE ID
+                .show();
+    }
+
     private void setAllText(){
 
 
@@ -55,7 +87,9 @@ public class MatterDetailActivity extends BaseActivity {
 
 
         detailContent = (TextView) findViewById(R.id.matter_detail_content);
+        detailContent.setOnClickListener(this);
         detailDays = (TextView) findViewById(R.id.matter_detail_days);
+        detailDays.setOnClickListener(this);
         detailDate = (TextView) findViewById(R.id.matter_target_date);
         detailAfter = (TextView) findViewById(R.id.detail_after_text);
         detailBefore = (TextView) findViewById(R.id.detail_before_text);
@@ -135,10 +169,26 @@ public class MatterDetailActivity extends BaseActivity {
         }
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
         setAllText();
 
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.matter_detail_content:
+                showGuide(detailContent,"detailContent","This is detailContent","Check here to see matter detail!");
+                break;
+            case R.id.matter_detail_days:
+                showGuide(detailDays,"detailDays","Here is the count down day","Yep this simple");
+                break;
+            default:
+                break;
+
+        }
     }
 }

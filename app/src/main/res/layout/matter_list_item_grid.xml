@@ -10,34 +10,41 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
             android:id="@+id/header_linear"
-            android:background="#ffffff">
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="#ffffff"
+            android:gravity="center_horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/matter_before_text"
-                android:textColor="#ffffff"
-                android:text="hello!"/>
-
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="hello"
+                android:text="hello!"
+                android:textSize="17sp"
+                android:layout_gravity="center_vertical"
+                android:textColor="#ffffff"/>
+
+            <TextView
+                android:id="@+id/matter_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:maxLines="1"
-                android:textColor="#ffffff"
-                android:id="@+id/matter_content"/>
+                android:textSize="17sp"
+                android:text="hello"
+                android:layout_gravity="center_vertical"
+                android:textColor="#ffffff"/>
 
             <TextView
+                android:id="@+id/matter_after_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/matter_after_text"
-                android:textColor="#ffffff"
-                android:text="hello"/>
+                android:textSize="17sp"
+                android:text="hello"
+                android:layout_gravity="center_vertical"
+                android:textColor="#ffffff"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,12 +56,14 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/matter_day_count"
                 android:textSize="90sp"
+                android:textColor="@color/theme"
                 android:gravity="center_horizontal"
                 android:text="20"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/theme"
                 android:text="天"
                 android:textSize="12sp"/>
         </LinearLayout>
@@ -67,6 +76,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/matter_date"
+            android:textColor="@color/theme"
             android:gravity="center_horizontal"
             android:text="2015/9/18"/>
 

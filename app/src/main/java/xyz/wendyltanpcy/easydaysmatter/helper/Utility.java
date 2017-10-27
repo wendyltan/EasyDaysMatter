@@ -28,7 +28,7 @@ public class Utility {
         Calendar calendar = Calendar.getInstance();
         Calendar dateCal = Calendar.getInstance();
         dateCal.setTime(date);
-        long days = dateCal.get(Calendar.DAY_OF_MONTH) - calendar.get(Calendar.DAY_OF_MONTH);
+        long days = dateCal.get(Calendar.DAY_OF_YEAR)-calendar.get(Calendar.DAY_OF_YEAR);
         return days;
     }
 }

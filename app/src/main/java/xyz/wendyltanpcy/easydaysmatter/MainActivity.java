@@ -1,7 +1,6 @@
 package xyz.wendyltanpcy.easydaysmatter;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private View headerView;
 
     //set default to gridview
-    private boolean viewStatus = false;
+    private boolean viewStatus = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
         if (isSwitch){
             setContentView(R.layout.activity_main_linear);
             headerView = findViewById(R.id.header);
-            fillInHeader(headerView);
 
         }else{
             setContentView(R.layout.activity_main);
@@ -71,16 +69,12 @@ public class MainActivity extends AppCompatActivity {
         //get list and setDatabase
         mMatterList = DataSupport.findAll(Matter.class);
 
+        if (isSwitch){
+            fillInHeader(headerView);
+        }
+
         //set recyclerview
         mRecyclerView = (RecyclerView) findViewById(R.id.main_recycler_view);
-
-        FloatingActionButton addMatter = (FloatingActionButton) findViewById(R.id.add_matter);
-        addMatter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MatterAddActivity.actionStart(getApplicationContext(),mMatterList);
-            }
-        });
 
 
     }
@@ -105,15 +99,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fillInHeader(View v){
-        TextView headContent,headDate,headCount;
+        TextView headContent,headDate,headCount,headUtil;
         headContent = v.findViewById(R.id.head_event_content);
         headDate = v.findViewById(R.id.head_event_date);
         headCount = v.findViewById(R.id.head_days_count);
+        headUtil = v.findViewById(R.id.until_text);
         Matter matter = mMatterList.get(0);
+        String utilText = null;
         headContent.setText(matter.getMatterContent());
         headDate.setText(new SimpleDateFormat("yyy年MM月dd日").
                 format(matter.getTargetDate()));
-        headCount.setText(Long.toString(abs(Utility.getDateInterval(matter.getTargetDate()))));
+        long count = Utility.getDateInterval(matter.getTargetDate());
+        if (count>=0){
+            utilText = "还有";
+        }else if (count<0){
+            utilText = "已经";
+        }
+        headCount.setText(Long.toString(abs(count)));
+        headUtil.setText(utilText);
+
 
 
     }
@@ -136,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
         if(viewStatus){
             //if true
             doRefreshForLinear(MyAdapterLinear);
+            fillInHeader(headerView);
         }else{
             //false
             doRefreshForGrid(MyAdapterGrid);
@@ -163,6 +168,8 @@ public class MainActivity extends AppCompatActivity {
                     switchView(viewStatus);
                 }
                 return true;
+            case R.id.add_matter:
+                MatterAddActivity.actionStart(getApplicationContext(),mMatterList);
             default:
                 break;
         }
