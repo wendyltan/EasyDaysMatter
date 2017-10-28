@@ -16,10 +16,12 @@ import org.litepal.crud.DataSupport;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import xyz.wendyltanpcy.easydaysmatter.adapter.MatterGridAdapter;
 import xyz.wendyltanpcy.easydaysmatter.adapter.MatterLinearAdapter;
+import xyz.wendyltanpcy.easydaysmatter.helper.MatterComparator;
 import xyz.wendyltanpcy.easydaysmatter.helper.Utility;
 import xyz.wendyltanpcy.easydaysmatter.model.Matter;
 
@@ -34,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
     private MatterGridAdapter MyAdapterGrid;
     private MatterLinearAdapter MyAdapterLinear;
     private View headerView;
-
     //set default to gridview
     private boolean viewStatus = true;
 
@@ -68,8 +69,10 @@ public class MainActivity extends AppCompatActivity {
 
         //get list and setDatabase
         mMatterList = DataSupport.findAll(Matter.class);
+        mMatterList = sortMatterList(mMatterList);
 
-        if (isSwitch){
+
+        if(isSwitch){
             fillInHeader(headerView);
         }
 
@@ -122,8 +125,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * 按优先级排序列表(根据日期）
+     */
+
+    private List<Matter> sortMatterList(List<Matter> matterList){
+        Collections.sort(matterList,new MatterComparator());
+        return  matterList;
+    }
+
+
+
     private void doRefreshForGrid(MatterGridAdapter adapter){
         mMatterList = adapter.getMatterList();
+        mMatterList = sortMatterList(mMatterList);
         adapter.notifyDataSetChanged();
 
     }
@@ -131,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void doRefreshForLinear(MatterLinearAdapter adapter){
         mMatterList = adapter.getMatterList();
+        mMatterList = sortMatterList(mMatterList);
         adapter.notifyDataSetChanged();
     }
 
