@@ -33,8 +33,8 @@ dependencies {
 
     //database
     compile 'org.litepal.android:core:1.4.1'
-    //guide view
-    compile 'com.github.wooplr:Spotlight:1.2.3'
+    //showcase view
+    compile 'com.github.deano2390:MaterialShowcaseView:1.2.0'
     //timeline
     compile 'com.github.vipulasri:timelineview:1.0.5'
     testCompile 'junit:junit:4.12'

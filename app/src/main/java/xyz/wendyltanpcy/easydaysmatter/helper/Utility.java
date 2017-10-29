@@ -3,6 +3,7 @@ package xyz.wendyltanpcy.easydaysmatter.helper;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Created by user on 17-8-29.
@@ -26,9 +27,16 @@ public class Utility {
      */
     public static long getDateInterval(Date date) {
         Calendar calendar = Calendar.getInstance();
-        Calendar dateCal = Calendar.getInstance();
-        dateCal.setTime(date);
-        long days = dateCal.get(Calendar.DAY_OF_YEAR)-calendar.get(Calendar.DAY_OF_YEAR);
-        return days;
+        Date now = calendar.getTime();
+        GregorianCalendar inCalendar = new GregorianCalendar();
+
+        GregorianCalendar nowCanlendar = new GregorianCalendar();
+
+        inCalendar.setTime(date);
+
+        nowCanlendar.setTime(now);
+
+        long dayCount = (inCalendar.getTimeInMillis()-nowCanlendar.getTimeInMillis())/(1000*3600*24);
+        return dayCount;
     }
 }
