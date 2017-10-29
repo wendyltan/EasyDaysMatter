@@ -5,7 +5,7 @@ import java.util.Comparator;
 import xyz.wendyltanpcy.easydaysmatter.model.Matter;
 
 /**
- * Created by Wendy on 2017/10/28.
+ * 两个倒数日根据离当前日期的日数进行比较
  */
 
 public class MatterComparator implements Comparator {

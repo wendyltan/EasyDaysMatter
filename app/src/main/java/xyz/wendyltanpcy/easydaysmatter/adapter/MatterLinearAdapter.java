@@ -63,17 +63,6 @@ public class MatterLinearAdapter extends RecyclerView.Adapter<MatterLinearAdapte
     @Override
     public void onBindViewHolder(MatterLinearAdapter.ViewHolder holder, int position) {
         Matter matter = mMatterList.get(position);
-        if (position>0){
-            Matter before = mMatterList.get(position-1);
-
-            if (before!=null){
-                if (before.getTargetDate().getDay()==matter.getTargetDate().getDay()){
-                    counter++;
-                }
-            }
-        }
-
-
 
         String matterContent = matter.getMatterContent();
         if (matterContent.length()>5){
@@ -86,6 +75,19 @@ public class MatterLinearAdapter extends RecyclerView.Adapter<MatterLinearAdapte
         String dateStr = new SimpleDateFormat("MM月dd日").format(matter.getTargetDate());
         holder.matterTimelineText.setText(dateStr);
 
+
+        if (position>0){
+            //和前一个倒数日时间比较天数，相同则计数器加一
+            Matter before = mMatterList.get(position-1);
+
+            if (before!=null){
+                if (before.getTargetDate().getDay()==matter.getTargetDate().getDay()){
+                    counter++;
+                }
+            }
+        }
+
+        //如果计数器大于一说明有几个连续相同日期的日子，这时候只显示一次日期。
         if (counter>1){
             View visability = holder.mCardView;
             visability.setVisibility(View.GONE);
@@ -97,9 +99,11 @@ public class MatterLinearAdapter extends RecyclerView.Adapter<MatterLinearAdapte
             visability.setVisibility(View.VISIBLE);
 
         }
+        //重置计数器对下一个判断
         counter = 1;
 
-        //deal with style of different duration
+
+        //duration不同的时候显示不同的文字提示
         String beforetext = "";
         String aftertext = "";
         if(duration < 0) {

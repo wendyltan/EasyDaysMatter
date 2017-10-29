@@ -1,6 +1,8 @@
 package xyz.wendyltanpcy.easydaysmatter;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.litepal.LitePal;
 import org.litepal.crud.DataSupport;
@@ -50,12 +53,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void baseInit(boolean isSwitch){
-        if (isSwitch){
+    private void baseInit(boolean isSwitch) {
+        if (isSwitch) {
             setContentView(R.layout.activity_main_linear);
             headerView = findViewById(R.id.header);
 
-        }else{
+        } else {
             setContentView(R.layout.activity_main);
         }
 
@@ -66,21 +69,19 @@ public class MainActivity extends AppCompatActivity {
         LitePal.getDatabase();
 
 
-
         //get list and setDatabase
         mMatterList = DataSupport.findAll(Matter.class);
-        mMatterList = sortMatterList(mMatterList);
-
-
-        if(isSwitch){
-            fillInHeader(headerView);
-        }
 
         //set recyclerview
         mRecyclerView = (RecyclerView) findViewById(R.id.main_recycler_view);
 
 
     }
+
+    /**
+     * 切换视图
+     * @param isSwitch
+     */
 
     public void switchView(boolean isSwitch){
         if (isSwitch){
@@ -89,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
             mRecyclerView.setLayoutManager(layoutManager);
             MyAdapterLinear = new MatterLinearAdapter(mMatterList);
             mRecyclerView.setAdapter(MyAdapterLinear);
+            //切换视图后马上刷新一下
+            onResume();
 
         }else{
             //set to grid recyclerview
@@ -96,33 +99,58 @@ public class MainActivity extends AppCompatActivity {
             mRecyclerView.setLayoutManager(layoutManager);
             MyAdapterGrid = new MatterGridAdapter(mMatterList);
             mRecyclerView.setAdapter(MyAdapterGrid);
+            onResume();
 
 
         }
     }
 
+    /**
+     * 填充线性列表头部
+     * @param v
+     */
+
     private void fillInHeader(View v){
-        TextView headContent,headDate,headCount,headUtil;
+        TextView headContent,headDate,headCount,headUtil,headDistance;
         headContent = v.findViewById(R.id.head_event_content);
         headDate = v.findViewById(R.id.head_event_date);
         headCount = v.findViewById(R.id.head_days_count);
         headUtil = v.findViewById(R.id.until_text);
+        headDistance = v.findViewById(R.id.distance_text);
         Matter matter = mMatterList.get(0);
         String utilText = null;
+        String distanceText = null;
         headContent.setText(matter.getMatterContent());
         headDate.setText(new SimpleDateFormat("yyy年MM月dd日").
                 format(matter.getTargetDate()));
         long count = Utility.getDateInterval(matter.getTargetDate());
         if (count>=0){
+            distanceText = "距离";
             utilText = "还有";
         }else if (count<0){
+            distanceText = "";
             utilText = "已经";
         }
         headCount.setText(Long.toString(abs(count)));
+        headDistance.setText(distanceText);
         headUtil.setText(utilText);
 
 
 
+    }
+
+    private void clearHeader(View v){
+        TextView headContent,headDate,headCount,headUtil,headDistance;
+        headContent = v.findViewById(R.id.head_event_content);
+        headDate = v.findViewById(R.id.head_event_date);
+        headCount = v.findViewById(R.id.head_days_count);
+        headUtil = v.findViewById(R.id.until_text);
+        headDistance = v.findViewById(R.id.distance_text);
+        headContent.setText("");
+        headCount.setText("");
+        headDate.setText("");
+        headUtil.setText("还没有");
+        headDistance.setText("");
     }
 
     /**
@@ -137,17 +165,22 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void doRefreshForGrid(MatterGridAdapter adapter){
-        mMatterList = adapter.getMatterList();
-        mMatterList = sortMatterList(mMatterList);
-        adapter.notifyDataSetChanged();
+        if (!mMatterList.isEmpty()){
+            mMatterList = adapter.getMatterList();
+            mMatterList = sortMatterList(mMatterList);
+            adapter.notifyDataSetChanged();
+        }
+
 
     }
 
 
     private void doRefreshForLinear(MatterLinearAdapter adapter){
-        mMatterList = adapter.getMatterList();
-        mMatterList = sortMatterList(mMatterList);
-        adapter.notifyDataSetChanged();
+        if (!mMatterList.isEmpty()) {
+            mMatterList = adapter.getMatterList();
+            mMatterList = sortMatterList(mMatterList);
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -156,7 +189,9 @@ public class MainActivity extends AppCompatActivity {
         if(viewStatus){
             //if true
             doRefreshForLinear(MyAdapterLinear);
-            fillInHeader(headerView);
+            //刷新的时候重新填充头部
+            if (!mMatterList.isEmpty())
+                fillInHeader(headerView);
         }else{
             //false
             doRefreshForGrid(MyAdapterGrid);
@@ -186,6 +221,32 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.add_matter:
                 MatterAddActivity.actionStart(getApplicationContext(),mMatterList);
+                return true;
+            case R.id.delete_all_matter:
+                AlertDialog dialog  = new AlertDialog.Builder(this)
+                        .setMessage("删除的数据无法恢复(点击屏幕取消删除)")
+                        .setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                DataSupport.deleteAll(Matter.class);
+                                mMatterList.clear();
+                                Toast.makeText(getApplicationContext(),"删除成功！",Toast.LENGTH_SHORT).show();
+                                if (viewStatus ==true) {
+                                    MyAdapterLinear.notifyDataSetChanged();
+                                    clearHeader(headerView);
+                                }
+                                else
+                                    MyAdapterGrid.notifyDataSetChanged();
+
+                            }
+                        })
+                        .setCancelable(true)
+                        .setTitle("确认删除吗")
+                        .create();
+                dialog.show();
+                return true;
+
+
             default:
                 break;
         }
