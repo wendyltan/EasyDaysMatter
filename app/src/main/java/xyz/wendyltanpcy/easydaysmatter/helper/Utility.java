@@ -1,7 +1,6 @@
 package xyz.wendyltanpcy.easydaysmatter.helper;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -26,17 +25,23 @@ public class Utility {
      * @return the interval between current date and target date
      */
     public static long getDateInterval(Date date) {
-        Calendar calendar = Calendar.getInstance();
-        Date now = calendar.getTime();
+
+        Date now = new Date();
+
         GregorianCalendar inCalendar = new GregorianCalendar();
 
         GregorianCalendar nowCanlendar = new GregorianCalendar();
 
         inCalendar.setTime(date);
 
+        now.setHours(0);
+        now.setMinutes(0);
+        now.setSeconds(0);
+
         nowCanlendar.setTime(now);
 
-        long dayCount = (inCalendar.getTimeInMillis()-nowCanlendar.getTimeInMillis())/(1000*3600*24);
+        long dayCount = (inCalendar.getTimeInMillis()-nowCanlendar.getTimeInMillis()+86400000-1)/86400000;
+
         return dayCount;
     }
 }

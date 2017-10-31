@@ -8,6 +8,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,6 +53,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    /**
+     * 基本视图和控件初始化
+     * @param isSwitch
+     */
 
     private void baseInit(boolean isSwitch) {
         if (isSwitch) {
@@ -139,6 +145,11 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * 没有倒数日的时候头部回复原来
+     * @param v
+     */
+
     private void clearHeader(View v){
         TextView headContent,headDate,headCount,headUtil,headDistance;
         headContent = v.findViewById(R.id.head_event_content);
@@ -162,12 +173,19 @@ public class MainActivity extends AppCompatActivity {
         return  matterList;
     }
 
+    /**
+     * 两种不同的视图的刷新
+     * @param adapter
+     */
+
 
 
     private void doRefreshForGrid(MatterGridAdapter adapter){
         if (!mMatterList.isEmpty()){
             mMatterList = adapter.getMatterList();
             mMatterList = sortMatterList(mMatterList);
+            adapter.notifyDataSetChanged();
+        }else{
             adapter.notifyDataSetChanged();
         }
 
@@ -177,8 +195,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void doRefreshForLinear(MatterLinearAdapter adapter){
         if (!mMatterList.isEmpty()) {
-            mMatterList = adapter.getMatterList();
+            adapter = new MatterLinearAdapter(mMatterList);
+            mRecyclerView.setAdapter(adapter);
             mMatterList = sortMatterList(mMatterList);
+            Log.i("INFO","sorting list");
+            adapter.notifyDataSetChanged();
+        }else{
+            clearHeader(headerView);
             adapter.notifyDataSetChanged();
         }
     }
@@ -186,6 +209,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.i("INFO","calling onResume!");
         if(viewStatus){
             //if true
             doRefreshForLinear(MyAdapterLinear);
@@ -220,7 +244,8 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return true;
             case R.id.add_matter:
-                MatterAddActivity.actionStart(getApplicationContext(),mMatterList);
+                MatterAddActivity.actionStart(this,mMatterList);
+                Log.i("INFO","enter add matter activity");
                 return true;
             case R.id.delete_all_matter:
                 AlertDialog dialog  = new AlertDialog.Builder(this)

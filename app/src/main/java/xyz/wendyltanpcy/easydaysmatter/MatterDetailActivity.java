@@ -7,6 +7,7 @@ import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
@@ -48,10 +49,16 @@ public class MatterDetailActivity extends BaseActivity{
         super.layoutId = R.layout.activity_matter_detail;
         super.title = "MatterDetail";
         super.onCreate(savedInstanceState);
+        super.mToolbar.setBackgroundColor(0);
         setAllText();
 
 
     }
+
+    /**
+     * 设置向导的设置（连续向导）
+     * @param showCaseID
+     */
 
     private void setShowCaseConfig(String showCaseID){
         ShowcaseConfig config = new ShowcaseConfig();
@@ -74,7 +81,9 @@ public class MatterDetailActivity extends BaseActivity{
         sequence.start();
     }
 
-
+    /**
+     * 设置所有textView在这
+     */
 
     private void setAllText(){
 
@@ -119,6 +128,14 @@ public class MatterDetailActivity extends BaseActivity{
         detailDays.setText(Long.toString(abs(daysCount)));
     }
 
+    /**
+     * 静态方法启动此活动
+     * @param context
+     * @param matter
+     * @param matterList
+     * @param position
+     */
+
     public static void actionStart(Context context, Matter matter, List<Matter> matterList,int position){
         Intent i = new Intent(context,MatterDetailActivity.class);
         mContext = context;
@@ -146,6 +163,7 @@ public class MatterDetailActivity extends BaseActivity{
                     public void onClick(DialogInterface dialogInterface, int i) {
                         mMatter.delete();
                         sMatterList.remove(matpos);
+                        Log.i("INFO","quit after delet matter in list of this activity");
                         finish();
                     }
                 });
