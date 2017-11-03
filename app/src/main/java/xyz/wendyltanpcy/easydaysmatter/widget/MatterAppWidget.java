@@ -14,6 +14,8 @@ import org.litepal.crud.DataSupport;
 import java.util.ArrayList;
 import java.util.List;
 
+import xyz.wendyltanpcy.easydaysmatter.MainActivity;
+import xyz.wendyltanpcy.easydaysmatter.MatterAddActivity;
 import xyz.wendyltanpcy.easydaysmatter.MatterDetailActivity;
 import xyz.wendyltanpcy.easydaysmatter.R;
 import xyz.wendyltanpcy.easydaysmatter.model.Matter;
@@ -59,6 +61,17 @@ public class MatterAppWidget extends AppWidgetProvider {
         final PendingIntent donePendingIntent = PendingIntent
                 .getBroadcast(context, 0, openDetailIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         mRemoteViews.setPendingIntentTemplate(R.id.appwidget_list, donePendingIntent);
+
+        // 设置 AppWidget label 点击事件
+        Intent labelIntent = new Intent(context, MainActivity.class);
+        PendingIntent labelPendingIntent = PendingIntent.getActivity(context, 0, labelIntent, 0);
+        mRemoteViews.setOnClickPendingIntent(R.id.appwidget_text, labelPendingIntent);
+
+        // 设置 AppWidget add 点击事件
+        Intent addIntent = new Intent(context, MatterAddActivity.class);
+        PendingIntent addPendingIntent = PendingIntent.getActivity(context,0,addIntent,0);
+        mRemoteViews.setOnClickPendingIntent(R.id.appwidget_add,addPendingIntent);
+
 
         appWidgetManager.updateAppWidget(appWidgetId,mRemoteViews);
     }

@@ -72,12 +72,16 @@ public class ListViewService extends RemoteViewsService{
             views.setTextViewText(R.id.matter_day_count, String.valueOf(Utility.getDateInterval(matter.getTargetDate())));
 
 
-
-            final Intent doneIntent = new Intent();
+            //open detai activity intent
+            Intent doneIntent = new Intent();
             doneIntent.putExtra("pos",position);
             doneIntent.putExtra("matter",matter);
             doneIntent.putExtra(MatterAppWidget.EXTRA_DO, MatterAppWidget.OPEN_DETAIL);
             views.setOnClickFillInIntent(R.id.matter_content, doneIntent);
+
+
+
+
 
             return views;
         }

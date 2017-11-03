@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -86,6 +85,8 @@ public class MatterAddActivity extends BaseActivity implements View.OnClickListe
         if (matterContent.getText().length()>8){
             matterContent.getText().clear();
             Toast.makeText(MatterAddActivity.this,"请重新输入！",Toast.LENGTH_SHORT).show();
+        }else if (matterContent.getText().length()==0){
+            Toast.makeText(MatterAddActivity.this,"不许输入空事件！",Toast.LENGTH_SHORT).show();
         }else{
             matter.setMatterContent(matterContent.getText().toString());
 
@@ -99,9 +100,7 @@ public class MatterAddActivity extends BaseActivity implements View.OnClickListe
             matter.setCreateDate(c.getTime());
             matter.save();
             sMatterList.add(matter);
-            Log.i("INFO","add matter activity quit....");
-
-
+            Toast.makeText(MatterAddActivity.this,"保存成功！",Toast.LENGTH_SHORT).show();
             finish();
         }
 
