@@ -58,10 +58,11 @@ public class MatterAppWidget extends AppWidgetProvider {
         final Intent openDetailIntent = new Intent(context, MatterAppWidget.class);
         openDetailIntent.setAction(ACTION_DONE);
         openDetailIntent.setData(Uri.parse(openDetailIntent.toUri(Intent.URI_INTENT_SCHEME)));
-        final PendingIntent donePendingIntent = PendingIntent
-                .getBroadcast(context, 0, openDetailIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        mRemoteViews.setPendingIntentTemplate(R.id.appwidget_list, donePendingIntent);
+        final PendingIntent donePendingIntent =
+                PendingIntent.getBroadcast(context,0, openDetailIntent,PendingIntent.FLAG_UPDATE_CURRENT);
 
+
+        mRemoteViews.setPendingIntentTemplate(R.id.appwidget_list, donePendingIntent);
         // 设置 AppWidget label 点击事件
         Intent labelIntent = new Intent(context, MainActivity.class);
         PendingIntent labelPendingIntent = PendingIntent.getActivity(context, 0, labelIntent, 0);

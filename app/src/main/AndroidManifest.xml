@@ -20,7 +20,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".MatterAddActivity"/>
-        <activity android:name=".MatterDetailActivity"/>
+        <activity android:name=".MatterDetailActivity"
+                  android:parentActivityName=".MainActivity"/>
         <activity android:name=".MatterEditActivity"/>
 
         <receiver

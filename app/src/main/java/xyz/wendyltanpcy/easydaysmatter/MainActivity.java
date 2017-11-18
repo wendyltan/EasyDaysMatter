@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private MatterGridAdapter MyAdapterGrid;
     private MatterLinearAdapter MyAdapterLinear;
     private View headerView;
-    //set default to gridview
+    //set default to listview
     private boolean viewStatus = true;
 
     @Override

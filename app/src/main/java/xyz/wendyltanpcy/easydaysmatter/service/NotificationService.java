@@ -5,7 +5,9 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.IBinder;
+import android.support.annotation.RequiresApi;
 
 import org.litepal.LitePal;
 import org.litepal.crud.DataSupport;
@@ -48,24 +50,36 @@ public class NotificationService extends Service {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Intent Intent = new Intent(this, MainActivity.class);
+        PendingIntent pi = PendingIntent.getActivity(this, 0, Intent, 0);
         Notification.Builder builder = new Notification.Builder(this.getApplicationContext()); //获取一个Notification构造器　
-        builder.setContentIntent(PendingIntent.getActivity(this, 0, Intent, 0))// 设置PendingIntent
-                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_launcher)) // 设置下拉列表中的图标(大图标)
-                .setContentTitle("首要事件") // 设置下拉列表里的标题
-                .setContentText(mMatter.getMatterContent())
-                .setSmallIcon(R.mipmap.ic_launcher) // 设置状态栏内的小图标
-                .setWhen(System.currentTimeMillis()); // 设置该通知发生的时间
+        if (mMatter!=null){
+            builder.setContentIntent(pi)// 设置PendingIntent
+                    .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.time)) // 设置下拉列表中的图标(大图标)
+                    .setContentTitle("首要事件") // 设置下拉列表里的标题
+                    .setContentText(mMatter.getMatterContent())
+                    .setAutoCancel(true)
+                    .setSmallIcon(R.drawable.time) // 设置状态栏内的小图标
+                    .setWhen(System.currentTimeMillis()); // 设置该通知发生的时间
+        }else{
+            builder.setContentIntent(pi)// 设置PendingIntent
+                    .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.drawable.time)) // 设置下拉列表中的图标(大图标)
+                    .setContentTitle("首要事件") // 设置下拉列表里的标题
+                    .setContentText("还没有倒数日呢")
+                    .setAutoCancel(true)
+                    .setSmallIcon(R.drawable.time) // 设置状态栏内的小图标
+                    .setWhen(System.currentTimeMillis()); // 设置该通知发生的时间
+        }
+
 
 
         Notification notification = builder.build(); // 获取构建好的Notification
         notification.defaults = Notification.DEFAULT_SOUND; //设置为默认的声音
-
+        notification.flags = Notification.FLAG_AUTO_CANCEL;
         startForeground(110, notification);// 开始前台服务
-
-
 
 
         return flags;
