@@ -1,8 +1,8 @@
 package xyz.wendyltanpcy.easydaysmatter.helper;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 /**
  * Created by user on 17-8-29.
@@ -26,22 +26,31 @@ public class Utility {
      */
     public static long getDateInterval(Date date) {
 
+        //不适用毫秒值计算，可能会产生误差
         Date now = new Date();
+        Calendar cal1 = Calendar.getInstance();
+        cal1.setTime(now);
 
-        GregorianCalendar inCalendar = new GregorianCalendar();
+        Calendar cal2 = Calendar.getInstance();
+        cal2.setTime(date);
+        int day1 = cal1.get(Calendar.DAY_OF_YEAR);
+        int day2 = cal2.get(Calendar.DAY_OF_YEAR);
 
-        GregorianCalendar nowCanlendar = new GregorianCalendar();
+        int year1 = cal1.get(Calendar.YEAR);
+        int year2 = cal2.get(Calendar.YEAR);
+        if (year1 != year2) {  //同一年
+            int timeDistance = 0;
+            for (int i = year1; i < year2; i++) {
+                if (i % 4 == 0 && i % 100 != 0 || i % 400 == 0) {  //闰年
+                    timeDistance += 366;
+                } else {  //不是闰年
 
-        inCalendar.setTime(date);
-
-        now.setHours(0);
-        now.setMinutes(0);
-        now.setSeconds(0);
-
-        nowCanlendar.setTime(now);
-
-        long dayCount = (inCalendar.getTimeInMillis()-nowCanlendar.getTimeInMillis()+86400000-1)/86400000;
-
-        return dayCount;
+                    timeDistance += 365;
+                }
+            }
+            return timeDistance + (day2 - day1);
+        } else { //不同年
+            return day2 - day1;
+        }
     }
 }
